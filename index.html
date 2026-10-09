@@ -17,10 +17,10 @@ gap:5px;padding:3px 5px;border-bottom:1px solid rgba(255,255,255,.16)}
 font-weight:900;white-space:nowrap}
 .arrow{font-size:22px;line-height:1}
 .dname{font-size:14px;letter-spacing:.01em}
-.train{min-width:0;display:grid;grid-template-columns:35px 70px 82px minmax(72px,1fr) 78px;
+.train{min-width:0;display:grid;grid-template-columns:35px 88px 82px minmax(86px,1fr) 66px;
 gap:5px;align-items:center;padding:2px 7px;border-radius:6px;background:rgba(255,255,255,.07)}
 .tag{font-size:8px;font-weight:900;letter-spacing:.06em;color:rgba(255,255,255,.70)}
-.time{font-size:21px;font-weight:950;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.time{font-size:21px;font-weight:950;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap;padding-right:3px}
 .type{justify-self:start;padding:2px 5px;border-radius:5px;font-size:11px;font-weight:950;white-space:nowrap;
 background:rgba(255,255,255,.15)}
 .type.limited{background:rgba(184,58,58,.82)}
@@ -35,7 +35,7 @@ background:rgba(255,255,255,.15)}
 @media(max-width:760px){
  .row{grid-template-columns:96px minmax(0,1fr) minmax(0,1fr)}
  .dname{font-size:12px}
- .train{grid-template-columns:28px 63px 68px minmax(58px,1fr) 63px;gap:4px;padding:2px 5px}
+ .train{grid-template-columns:28px 78px 64px minmax(58px,1fr) 54px;gap:4px;padding:2px 5px}
  .time{font-size:19px} .type{font-size:10px} .dest{font-size:13px} .cd{font-size:9px}
 }
 </style>
@@ -58,7 +58,7 @@ background:rgba(255,255,255,.15)}
   - 一般列車: 河内国分(大阪方面)、安堂(伊勢方面)、河内国分(安堂通過列車)。
   - 快速急行: 近鉄公式 鶴橋・大和八木時刻表。
   - 特急: 近鉄公式「特急時刻表」A/B。
-  - 一般列車・快速急行の列車番号は近鉄一般向け公式時刻表で確認できないため「—」表示。
+  - 一般列車・快速急行の列車番号は近鉄一般向け公式時刻表で確認できないため非表示。
   - 通過予測時刻は指定撮影地点への数学的補正値であり、公式の秒単位通過時刻ではない。
   - この版は「しまかぜ運転日」用。
 */
@@ -541,12 +541,12 @@ function upcoming(list,now){return list.filter(x=>x.t>=now-HOLD_AFTER_ESTIMATE).
 function render(id,r,i,now){
  const el=document.getElementById(id);
  if(!r){el.innerHTML='<div class="empty">本日の案内終了</div>';return}
- const no=r.no?`列番 ${r.no}`:"列番 —";
+ const no=r.no?`<span class="no">${r.no}列車</span>`:"";
  el.innerHTML=`
  <div class="tag">${i===0?"NEXT":"NEXT2"}</div>
  <div class="time">${showTime(r.t)}</div>
  <div class="type ${cls(r.type)}">${label(r.type)}</div>
- <div class="dest">${r.dest}<span class="no">${no}</span></div>
+ <div class="dest">${r.dest}${no}</div>
  <div class="cd">${count(r.t-now)}</div>`;
 }
 function update(){
