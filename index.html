@@ -637,7 +637,7 @@ function render(id,r,i,now,offset){
  const no=r.no?`<span class="no">${String(r.no).padStart(4,"0")}列車</span>`:"";
  const pt=r.t+offset;
  el.innerHTML=`
- <div class="tag">${i===0?"NEXT":"NEXT2"}</div>
+ <div class="tag">${i===0?"先発":"次発"}</div>
  <div class="time">${showTime(pt)}</div>
  <div class="type ${cls(r.type)}">${label(r.type)}</div>
  <div class="dest">${r.dest}${no}</div>
