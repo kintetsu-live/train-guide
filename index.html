@@ -13,11 +13,10 @@ border-radius:9px;overflow:hidden;backdrop-filter:blur(5px);-webkit-backdrop-fil
 .row{height:44px;display:grid;grid-template-columns:112px minmax(0,1fr) minmax(0,1fr);
 gap:5px;padding:3px 5px;border-bottom:1px solid rgba(255,255,255,.16)}
 .row:last-child{border-bottom:0}
-.dir{display:flex;align-items:center;gap:6px;padding:0 7px;border-radius:6px;background:rgba(255,255,255,.07);
+.dir{display:flex;align-items:center;justify-content:center;padding:0 7px;border-radius:6px;background:rgba(255,255,255,.07);
 font-weight:900;white-space:nowrap}
-.arrow{font-size:22px;line-height:1}
 .dname{font-size:14px;letter-spacing:.01em}
-.train{min-width:0;display:grid;grid-template-columns:35px 88px 82px minmax(86px,1fr) 66px;
+.train{min-width:0;display:grid;grid-template-columns:35px 88px 82px minmax(86px,1fr) 118px;
 gap:5px;align-items:center;padding:2px 7px;border-radius:6px;background:rgba(255,255,255,.07)}
 .tag{font-size:8px;font-weight:900;letter-spacing:.06em;color:rgba(255,255,255,.70)}
 .time{font-size:21px;font-weight:950;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap;padding-right:3px}
@@ -35,7 +34,7 @@ background:rgba(255,255,255,.15)}
 @media(max-width:760px){
  .row{grid-template-columns:96px minmax(0,1fr) minmax(0,1fr)}
  .dname{font-size:12px}
- .train{grid-template-columns:28px 78px 64px minmax(58px,1fr) 54px;gap:4px;padding:2px 5px}
+ .train{grid-template-columns:28px 78px 64px minmax(58px,1fr) 98px;gap:4px;padding:2px 5px}
  .time{font-size:19px} .type{font-size:10px} .dest{font-size:13px} .cd{font-size:9px}
 }
 </style>
@@ -43,11 +42,11 @@ background:rgba(255,255,255,.15)}
 <body>
 <div class="board">
  <div class="row">
-  <div class="dir"><span class="arrow">←</span><span class="dname">大阪方面</span></div>
+  <div class="dir"><span class="dname">大阪方面</span></div>
   <div class="train" id="w1"></div><div class="train" id="w2"></div>
  </div>
  <div class="row">
-  <div class="dir"><span class="arrow">→</span><span class="dname">伊勢方面</span></div>
+  <div class="dir"><span class="dname">伊勢方面</span></div>
   <div class="train" id="e1"></div><div class="train" id="e2"></div>
  </div>
 </div>
@@ -536,7 +535,7 @@ function label(t){
 function count(delta){
  if(delta<=0)return"まもなく";
  const m=Math.floor(delta/60),s=Math.floor(delta%60);
- return m>99?"":`${m}:${pad(s)}`;
+ return m>99?"":`通過まで残り ${m}:${pad(s)}`;
 }
 function upcoming(list,now){return list.filter(x=>(x.t+PASSAGE_OFFSET_SEC)>=now-HOLD_AFTER_ESTIMATE).slice(0,2)}
 function render(id,r,i,now){
