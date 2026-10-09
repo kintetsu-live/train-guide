@@ -2,28 +2,792 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Train Guide</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>近鉄大阪線 次列車案内｜安堂～河内国分 平日</title>
 <style>
-body{
-  margin:0;
-  background:transparent;
-  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans",sans-serif;
+:root {
+  --bg: rgba(8, 12, 18, .88);
+  --card: rgba(255,255,255,.075);
+  --line: rgba(255,255,255,.17);
+  --text: #fff;
+  --sub: rgba(255,255,255,.72);
 }
-.board{
-  background:rgba(0,0,0,0.8);
-  color:white;
-  padding:16px;
-  font-size:28px;
-  font-weight:bold;
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+  overflow: hidden;
+}
+.wrap {
+  width: 100vw;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 14px 7px;
+  border-bottom: 1px solid var(--line);
+}
+.header .title {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+.header .meta {
+  font-size: 10px;
+  color: var(--sub);
+  white-space: nowrap;
+}
+.direction {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+  padding: 8px;
+  border-bottom: 1px solid var(--line);
+}
+.direction:last-of-type { border-bottom: 0; }
+.dirlabel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.06);
+}
+.dirlabel .arrow {
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 900;
+}
+.dirlabel .name {
+  margin-top: 5px;
+  font-size: 16px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.dirlabel .small {
+  margin-top: 3px;
+  font-size: 10px;
+  color: var(--sub);
+}
+.train {
+  min-width: 0;
+  padding: 7px 10px;
+  border-radius: 10px;
+  background: var(--card);
+}
+.train .tag {
+  font-size: 9px;
+  color: var(--sub);
+  letter-spacing: .12em;
+  font-weight: 800;
+}
+.mainline {
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+.time {
+  flex: 0 0 auto;
+  font-size: 24px;
+  line-height: 1.1;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+.type {
+  flex: 0 0 auto;
+  padding: 3px 7px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.15;
+  font-weight: 900;
+  background: rgba(255,255,255,.13);
+  white-space: nowrap;
+}
+.type.limited { background: rgba(210, 55, 55, .78); }
+.type.rapid { background: rgba(205, 117, 30, .78); }
+.type.express { background: rgba(184, 77, 46, .78); }
+.type.semi { background: rgba(50, 132, 90, .78); }
+.type.local { background: rgba(47, 105, 170, .78); }
+.dest {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 18px;
+  font-weight: 850;
+}
+.bottom {
+  margin-top: 4px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 10px;
+  color: var(--sub);
+}
+.countdown {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  color: #fff;
+}
+.warn {
+  display: none;
+  padding: 5px 12px;
+  border-top: 1px solid var(--line);
+  font-size: 10px;
+  font-weight: 800;
+  text-align: center;
+  background: rgba(170, 58, 35, .78);
+}
+.empty {
+  color: var(--sub);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 13px 4px;
+}
+@media (max-width: 700px) {
+  .direction { grid-template-columns: 115px minmax(0,1fr) minmax(0,1fr); }
+  .dirlabel .name { font-size: 13px; }
+  .time { font-size: 20px; }
+  .dest { font-size: 15px; }
+  .type { font-size: 11px; }
 }
 </style>
 </head>
 <body>
+<div class="wrap">
+  <div class="header">
+    <div class="title">近鉄大阪線　次列車案内</div>
+    <div class="meta">安堂～河内国分｜平日｜定刻基準・推定通過時刻</div>
+  </div>
 
-<div class="board">
-次の列車　17:04　特急　大阪上本町
+  <div class="direction">
+    <div class="dirlabel">
+      <div class="arrow">←</div>
+      <div class="name">大阪方面</div>
+      <div class="small">河内国分 → 安堂</div>
+    </div>
+    <div class="train" id="north1"></div>
+    <div class="train" id="north2"></div>
+  </div>
+
+  <div class="direction">
+    <div class="dirlabel">
+      <div class="arrow">→</div>
+      <div class="name">伊勢・名古屋方面</div>
+      <div class="small">安堂 → 河内国分</div>
+    </div>
+    <div class="train" id="south1"></div>
+    <div class="train" id="south2"></div>
+  </div>
+
+  <div class="warn" id="warn"></div>
 </div>
 
+<script>
+// ===== 設定 =====
+// 「しまかぜ」は運転日が固定の平日列車ではないため初期値は false。
+// 運転日だけ true に変更してください。
+const INCLUDE_SHIMAKAZE = false;
+
+// 推定時刻を過ぎても45秒間は「まもなく」として残し、その後次列車へ切り替えます。
+const HOLD_AFTER_ESTIMATE = 45;
+
+// 精度表示（A/B/C、±秒）を配信画面に出す場合だけ true。
+const SHOW_ACCURACY = false;
+
+// ===== 平日データ（2026年3月14日現在の公開時刻表を基礎に算出） =====
+const NORTH = [
+{t:18693,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:19413,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:20613,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:21513,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:21813,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:22233,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:22653,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:23013,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:23175,type:"特急",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:23373,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:23673,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:23853,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:24213,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:24225,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
+{t:24453,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:24675,type:"特急",dest:"大阪上本町",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:24933,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:25293,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:25413,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:25700,type:"V",dest:"大阪上本町",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:25845,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
+{t:25893,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:26013,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:26133,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:26490,type:"快速急行",dest:"大阪上本町",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:26553,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:26973,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:27150,type:"快速急行",dest:"大阪上本町",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:27273,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:27495,type:"特急",dest:"大阪上本町",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:27753,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:27930,type:"快速急行",dest:"大阪上本町",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:28233,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:28275,type:"UL",dest:"大阪難波",conf:"C",unc:60,basis:"鶴橋着基準補間"},
+{t:28293,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:28590,type:"快速急行",dest:"大阪上本町",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:28713,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:29040,type:"UL",dest:"大阪上本町",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:29193,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:29253,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:29550,type:"快速急行",dest:"大阪上本町",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:29673,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:29955,type:"特急",dest:"大阪上本町",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:30153,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:30225,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
+{t:30450,type:"快速急行",dest:"大阪上本町",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:30633,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:30960,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:30993,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:31533,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:31770,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:31833,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:32253,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:32373,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:32540,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:32793,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:33093,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:33453,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:33705,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
+{t:33980,type:"V",dest:"大阪上本町",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:34113,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:34260,type:"ISL",dest:"大阪難波",conf:"C",unc:60,basis:"鶴橋着基準補間"},
+{t:34560,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:34773,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:34833,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:35370,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:35433,type:"普通",dest:"高安",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:35655,type:"特急",dest:"大阪上本町",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:36033,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:36093,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:36513,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:36860,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:36900,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"鶴橋着基準補間"},
+{t:37413,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:37473,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:37800,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:38373,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:38433,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:38910,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:39333,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:39393,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:40053,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:40113,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:40460,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:41013,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:41073,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:41460,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:41973,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:42033,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:42510,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:42933,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:42993,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:43653,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:43713,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:44055,type:"特急",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:44613,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:44673,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:45060,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:45573,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:45633,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:46245,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
+{t:46533,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:46593,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:47253,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:47313,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:47655,type:"特急",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:48213,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:48273,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:48600,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:49173,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:49233,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:49845,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
+{t:50133,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:50193,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:50853,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:50913,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:51260,type:"ISL",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:51813,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:51873,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:52260,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:52773,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:52833,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:53445,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
+{t:53673,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:53793,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:54453,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:54513,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:54860,type:"ISL",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:55413,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:55473,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:55860,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:56160,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"鶴橋着基準補間"},
+{t:56373,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:56493,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:57045,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
+{t:57333,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:57393,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:58053,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:58113,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:58520,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:58593,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:59040,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"鶴橋着基準補間"},
+{t:59433,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:59640,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:59673,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:60153,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:60513,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:60525,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
+{t:61053,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:61113,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:61953,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:62073,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:62360,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:62553,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:62913,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:63033,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:63180,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:63513,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:64125,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
+{t:64233,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:64293,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:64755,type:"特急",dest:"大阪上本町",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:65313,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:65493,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:65553,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:65960,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:66153,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:66633,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:66693,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:66780,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:67173,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:67533,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:67710,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:67773,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:68235,type:"特急",dest:"大阪上本町",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:68253,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:68673,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:68733,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:68913,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:69380,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:69513,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:69693,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:69993,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:70320,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:70353,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:70833,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:70893,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:71370,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:71373,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:71733,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:72153,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:72213,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:72753,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:72860,type:"ISL",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:73173,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:73233,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:73425,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
+{t:73980,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:74313,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:74493,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:74553,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:74970,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:75453,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:75513,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:75800,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:76053,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:76773,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:76893,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:77460,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:77973,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:78033,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:78570,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:78693,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:79113,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:79280,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
+{t:79713,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:80133,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:80493,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:81000,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:81993,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:82170,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:82233,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:83133,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:83193,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:84453,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:84600,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
+{t:84633,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:86253,type:"普通",dest:"高安",conf:"A",unc:30,basis:"河内国分発基準"},
+{t:87633,type:"普通",dest:"高安",conf:"A",unc:30,basis:"河内国分発基準"}
+];
+const SOUTH = [
+{t:18550,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:20110,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:21130,type:"普通",dest:"榛原",conf:"A",unc:30,basis:"安堂発基準"},
+{t:21243,type:"区間急行",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:22210,type:"普通",dest:"名張",conf:"A",unc:30,basis:"安堂発基準"},
+{t:22810,type:"普通",dest:"榛原",conf:"A",unc:30,basis:"安堂発基準"},
+{t:22980,type:"V",dest:"賢島",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:23583,type:"区間急行",dest:"大和八木",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:23890,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:24363,type:"急行",dest:"五十鈴川",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:24415,type:"UL",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:24723,type:"準急",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:24970,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:25203,type:"急行",dest:"青山町",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:25260,type:"V",dest:"宇治山田",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:25690,type:"区間準急",dest:"榛原",conf:"A",unc:30,basis:"安堂発基準"},
+{t:26223,type:"準急",dest:"五位堂",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:26235,type:"ひのとり",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:26530,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:26595,type:"特急",dest:"賢島",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:26823,type:"急行",dest:"五十鈴川",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:27250,type:"区間準急",dest:"榛原",conf:"A",unc:30,basis:"安堂発基準"},
+{t:27670,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:27963,type:"準急",dest:"大和朝倉",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:28074,type:"UL",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:28263,type:"急行",dest:"伊勢中川",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:28510,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:28623,type:"準急",dest:"五位堂",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:28930,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:28965,type:"V",dest:"宇治山田",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:29283,type:"急行",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:29650,type:"普通",dest:"五位堂",conf:"A",unc:30,basis:"安堂発基準"},
+{t:29835,type:"ひのとり",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:30250,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:30255,type:"特急",dest:"賢島",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:30571,type:"快速急行",dest:"青山町",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:31030,type:"普通",dest:"五位堂",conf:"A",unc:30,basis:"安堂発基準"},
+{t:31510,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:31674,type:"UL",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:31863,type:"急行",dest:"伊勢中川",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:32170,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:32643,type:"準急",dest:"大和朝倉",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:32850,type:"特急",dest:"宇治山田",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:32992,type:"快速急行",dest:"松阪",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:33310,type:"普通",dest:"五位堂",conf:"A",unc:30,basis:"安堂発基準"},
+{t:33435,type:"ひのとり",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:33850,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:33960,type:"ISL",dest:"賢島",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:34383,type:"区間急行",dest:"青山町",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:34750,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:35110,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:35265,type:"UL",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:35403,type:"区間急行",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:36130,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:36243,type:"区間急行",dest:"榛原",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:36910,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:37035,type:"ひのとり",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:37143,type:"区間急行",dest:"青山町",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:37680,type:"ISL",dest:"賢島",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:37990,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:38103,type:"区間急行",dest:"榛原",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:38710,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:38874,type:"UL",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:38943,type:"区間急行",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:39850,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:40023,type:"区間急行",dest:"榛原",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:40510,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:40635,type:"ひのとり",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:40863,type:"区間急行",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:41280,type:"V",dest:"賢島",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:41590,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:41703,type:"区間急行",dest:"榛原",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:42370,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:42474,type:"UL",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:42603,type:"区間急行",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:43330,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:43443,type:"区間急行",dest:"榛原",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:44110,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:44235,type:"ひのとり",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:44403,type:"区間急行",dest:"青山町",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:44880,type:"V",dest:"賢島",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:45190,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:45303,type:"区間急行",dest:"榛原",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:45910,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:46074,type:"UL",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:46203,type:"区間急行",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:46870,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:47043,type:"区間急行",dest:"榛原",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:47710,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:47835,type:"ひのとり",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:48003,type:"区間急行",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:48480,type:"V",dest:"賢島",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:48790,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:48903,type:"区間急行",dest:"榛原",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:49510,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:49674,type:"UL",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:49803,type:"区間急行",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:50470,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:50643,type:"区間急行",dest:"榛原",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:51310,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:51435,type:"ひのとり",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:51603,type:"区間急行",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:52080,type:"V",dest:"賢島",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:52390,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:52503,type:"区間急行",dest:"榛原",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:53110,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:53274,type:"UL",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:53403,type:"区間急行",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:54070,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:54243,type:"区間急行",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:54910,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:55035,type:"ひのとり",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:55203,type:"区間急行",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:55680,type:"ISL",dest:"賢島",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:55990,type:"普通",dest:"大和八木",conf:"A",unc:30,basis:"安堂発基準"},
+{t:56103,type:"区間急行",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:56770,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:56874,type:"UL",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:57003,type:"区間急行",dest:"大和八木",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:57970,type:"区間準急",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:58143,type:"急行",dest:"五十鈴川",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:58635,type:"ひのとり",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:58990,type:"区間準急",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:59280,type:"V",dest:"賢島",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:59403,type:"急行",dest:"青山町",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:59650,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:60130,type:"区間準急",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:60243,type:"急行",dest:"伊勢中川",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:60445,type:"UL",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:61030,type:"区間準急",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:61323,type:"急行",dest:"青山町",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:61630,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:62103,type:"準急",dest:"大和朝倉",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:62235,type:"ひのとり",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:62343,type:"急行",dest:"宇治山田",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:62650,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:62880,type:"V",dest:"鳥羽",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:63190,type:"区間準急",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:63363,type:"急行",dest:"青山町",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:63903,type:"準急",dest:"大和朝倉",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:64045,type:"UL",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:64330,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:64503,type:"急行",dest:"伊勢中川",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:64683,type:"準急",dest:"大和朝倉",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:64815,type:"特急",dest:"松阪",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:65170,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:65463,type:"急行",dest:"青山町",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:65703,type:"準急",dest:"榛原",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:65835,type:"ひのとり",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:66130,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:66211,type:"快速急行",dest:"名張",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:66480,type:"V",dest:"五十鈴川",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:66663,type:"準急",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:66910,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:67150,type:"快速急行",dest:"青山町",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:67503,type:"準急",dest:"大和朝倉",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:67645,type:"UL",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:67930,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:67990,type:"快速急行",dest:"青山町",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:68403,type:"準急",dest:"榛原",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:68415,type:"特急",dest:"松阪",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:68770,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:68890,type:"快速急行",dest:"松阪",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:69243,type:"準急",dest:"榛原",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:69435,type:"ひのとり",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:69730,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:69790,type:"快速急行",dest:"青山町",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:70080,type:"V",dest:"宇治山田",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:70263,type:"準急",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:70510,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:70690,type:"快速急行",dest:"青山町",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:71043,type:"準急",dest:"大和朝倉",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:71260,type:"UL",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:71530,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:71590,type:"快速急行",dest:"鳥羽",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:71943,type:"準急",dest:"榛原",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:72015,type:"特急",dest:"松阪",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:72370,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:72490,type:"快速急行",dest:"青山町",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:72843,type:"準急",dest:"大和朝倉",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:73035,type:"ひのとり",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:73330,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:73390,type:"快速急行",dest:"松阪",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:73680,type:"V",dest:"松阪",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:74043,type:"準急",dest:"大和朝倉",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:74235,type:"ひのとり",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:74403,type:"急行",dest:"青山町",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:74650,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:74874,type:"UL",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:75130,type:"区間準急",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:75303,type:"急行",dest:"宇治山田",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:75970,type:"区間準急",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:76055,type:"特急",dest:"松阪",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:76203,type:"急行",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:76635,type:"ひのとり",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:76990,type:"区間準急",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:77103,type:"急行",dest:"青山町",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:77280,type:"V",dest:"松阪",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:77830,type:"区間準急",dest:"榛原",conf:"A",unc:30,basis:"安堂発基準"},
+{t:78003,type:"急行",dest:"青山町",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:78465,type:"UL",dest:"近鉄名古屋",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:78730,type:"区間準急",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:78903,type:"急行",dest:"青山町",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:79570,type:"区間準急",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:79680,type:"V",dest:"松阪",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:79803,type:"急行",dest:"青山町",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:80530,type:"区間準急",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:80703,type:"急行",dest:"青山町",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:80865,type:"UL",dest:"名張",conf:"B",unc:45,basis:"前後主要駅補間"},
+{t:81610,type:"区間準急",dest:"榛原",conf:"A",unc:30,basis:"安堂発基準"},
+{t:81843,type:"急行",dest:"青山町",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:82095,type:"特急",dest:"名張",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:82330,type:"普通",dest:"河内国分",conf:"A",unc:30,basis:"安堂発基準"},
+{t:82863,type:"準急",dest:"名張",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:83110,type:"普通",dest:"大和朝倉",conf:"A",unc:30,basis:"安堂発基準"},
+{t:83343,type:"急行",dest:"大和八木",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:84310,type:"区間準急",dest:"榛原",conf:"A",unc:30,basis:"安堂発基準"},
+{t:84495,type:"特急",dest:"名張",conf:"C",unc:60,basis:"前後主要駅補間"},
+{t:84723,type:"急行",dest:"青山町",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:85810,type:"区間準急",dest:"榛原",conf:"A",unc:30,basis:"安堂発基準"},
+{t:85983,type:"急行",dest:"大和八木",conf:"A",unc:35,basis:"河内国分着基準"},
+{t:87070,type:"区間準急",dest:"五位堂",conf:"A",unc:30,basis:"安堂発基準"},
+{t:87243,type:"急行",dest:"大和八木",conf:"A",unc:35,basis:"河内国分着基準"}
+];
+
+const SHIMAKAZE_NORTH = {
+  t:64935, type:"しまかぜ", dest:"大阪難波",
+  conf:"C", unc:60, basis:"大和八木基準補間"
+};
+const SHIMAKAZE_SOUTH = {
+  t:39495, type:"しまかぜ", dest:"賢島",
+  conf:"C", unc:60, basis:"鶴橋基準補間"
+};
+
+if (INCLUDE_SHIMAKAZE) {
+  NORTH.push(SHIMAKAZE_NORTH);
+  SOUTH.push(SHIMAKAZE_SOUTH);
+  NORTH.sort((a,b)=>a.t-b.t);
+  SOUTH.sort((a,b)=>a.t-b.t);
+}
+
+function jstParts() {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Tokyo",
+    year: "numeric", month: "numeric", day: "numeric",
+    hour: "numeric", minute: "numeric", second: "numeric",
+    hourCycle: "h23"
+  }).formatToParts(new Date());
+  const o = {};
+  for (const p of parts) if (p.type !== "literal") o[p.type] = Number(p.value);
+  return o;
+}
+
+function serviceNow() {
+  const p = jstParts();
+  let sec = p.hour*3600 + p.minute*60 + p.second;
+  let serviceDate = new Date(Date.UTC(p.year, p.month-1, p.day));
+  if (p.hour < 4) {
+    sec += 86400;
+    serviceDate.setUTCDate(serviceDate.getUTCDate()-1);
+  }
+  return {sec, dow: serviceDate.getUTCDay()};
+}
+
+function pad2(n) { return String(n).padStart(2,"0"); }
+
+function estimatedClock(t) {
+  // 中心推定値を最寄り1分へ丸めて表示
+  const rounded = Math.round(t/60)*60;
+  const h = Math.floor(rounded/3600)%24;
+  const m = Math.floor((rounded%3600)/60);
+  return `${pad2(h)}:${pad2(m)}頃`;
+}
+
+function countdownText(delta) {
+  if (delta <= 0) return "まもなく";
+  const m = Math.floor(delta/60);
+  const s = Math.floor(delta%60);
+  return `目安 ${pad2(m)}:${pad2(s)}`;
+}
+
+function typeClass(type) {
+  if (["ひのとり","UL","V","ISL","特急","しまかぜ"].includes(type)) return "limited";
+  if (type === "快速急行") return "rapid";
+  if (["急行","区間急行"].includes(type)) return "express";
+  if (["準急","区間準急"].includes(type)) return "semi";
+  return "local";
+}
+
+function typeLabel(type) {
+  const map = {
+    "UL":"特急 UL",
+    "V":"特急 V",
+    "ISL":"特急 ISL",
+    "ひのとり":"ひのとり",
+    "しまかぜ":"しまかぜ"
+  };
+  return map[type] || type;
+}
+
+function findNext(list, nowSec) {
+  return list.filter(x => x.t >= nowSec - HOLD_AFTER_ESTIMATE).slice(0,2);
+}
+
+function renderTrain(el, train, index, nowSec) {
+  if (!train) {
+    el.innerHTML = `<div class="empty">本日の案内終了</div>`;
+    return;
+  }
+  const delta = train.t - nowSec;
+  const acc = SHOW_ACCURACY
+    ? `<span>推定${train.conf}・±約${train.unc}秒</span>`
+    : `<span>推定通過</span>`;
+  el.innerHTML = `
+    <div class="tag">${index===0 ? "NEXT" : "NEXT 2"}</div>
+    <div class="mainline">
+      <div class="time">${estimatedClock(train.t)}</div>
+      <div class="type ${typeClass(train.type)}">${typeLabel(train.type)}</div>
+      <div class="dest">${train.dest}</div>
+    </div>
+    <div class="bottom">
+      ${acc}
+      <span class="countdown">${countdownText(delta)}</span>
+    </div>`;
+}
+
+function update() {
+  const now = serviceNow();
+  const n = findNext(NORTH, now.sec);
+  const s = findNext(SOUTH, now.sec);
+
+  renderTrain(document.getElementById("north1"), n[0], 0, now.sec);
+  renderTrain(document.getElementById("north2"), n[1], 1, now.sec);
+  renderTrain(document.getElementById("south1"), s[0], 0, now.sec);
+  renderTrain(document.getElementById("south2"), s[1], 1, now.sec);
+
+  const warn = document.getElementById("warn");
+  if (now.dow === 0 || now.dow === 6) {
+    warn.style.display = "block";
+    warn.textContent = "このページは平日版です（土休日ダイヤではありません）";
+  } else {
+    warn.style.display = "none";
+  }
+}
+
+update();
+setInterval(update, 1000);
+</script>
 </body>
 </html>
