@@ -186,7 +186,7 @@ html, body {
 <div class="wrap">
   <div class="header">
     <div class="title">近鉄大阪線　次列車案内</div>
-    <div class="meta">安堂～河内国分｜平日｜定刻基準・推定通過時刻</div>
+    <div class="meta">安堂～河内国分｜平日・しまかぜ運転日｜定刻基準・推定通過時刻</div>
   </div>
 
   <div class="direction">
@@ -214,9 +214,8 @@ html, body {
 
 <script>
 // ===== 設定 =====
-// 「しまかぜ」は運転日が固定の平日列車ではないため初期値は false。
-// 運転日だけ true に変更してください。
-const INCLUDE_SHIMAKAZE = false;
+// しまかぜ運転日用。大阪難波発着しまかぜを両方向とも表示します。
+const INCLUDE_SHIMAKAZE = true;
 
 // 推定時刻を過ぎても45秒間は「まもなく」として残し、その後次列車へ切り替えます。
 const HOLD_AFTER_ESTIMATE = 45;
@@ -239,14 +238,12 @@ const NORTH = [
 {t:23673,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:23853,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:24213,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
-{t:24225,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
 {t:24453,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:24675,type:"特急",dest:"大阪上本町",conf:"C",unc:60,basis:"大和八木基準補間"},
 {t:24933,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:25293,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:25413,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:25700,type:"V",dest:"大阪上本町",conf:"C",unc:60,basis:"大和八木基準補間"},
-{t:25845,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
 {t:25893,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:26013,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:26133,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
@@ -259,7 +256,6 @@ const NORTH = [
 {t:27753,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:27930,type:"快速急行",dest:"大阪上本町",conf:"B",unc:45,basis:"大和八木基準補間"},
 {t:28233,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
-{t:28275,type:"UL",dest:"大阪難波",conf:"C",unc:60,basis:"鶴橋着基準補間"},
 {t:28293,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:28590,type:"快速急行",dest:"大阪上本町",conf:"B",unc:45,basis:"大和八木基準補間"},
 {t:28713,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
@@ -270,7 +266,6 @@ const NORTH = [
 {t:29673,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:29955,type:"特急",dest:"大阪上本町",conf:"C",unc:60,basis:"大和八木基準補間"},
 {t:30153,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
-{t:30225,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
 {t:30450,type:"快速急行",dest:"大阪上本町",conf:"B",unc:45,basis:"大和八木基準補間"},
 {t:30633,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:30960,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
@@ -287,7 +282,6 @@ const NORTH = [
 {t:33705,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
 {t:33980,type:"V",dest:"大阪上本町",conf:"C",unc:60,basis:"大和八木基準補間"},
 {t:34113,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
-{t:34260,type:"ISL",dest:"大阪難波",conf:"C",unc:60,basis:"鶴橋着基準補間"},
 {t:34560,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
 {t:34773,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:34833,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
@@ -298,7 +292,6 @@ const NORTH = [
 {t:36093,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:36513,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:36860,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
-{t:36900,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"鶴橋着基準補間"},
 {t:37413,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:37473,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:37800,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
@@ -357,7 +350,6 @@ const NORTH = [
 {t:55413,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:55473,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:55860,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
-{t:56160,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"鶴橋着基準補間"},
 {t:56373,type:"区間急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:56493,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:57045,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
@@ -367,7 +359,6 @@ const NORTH = [
 {t:58113,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:58520,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
 {t:58593,type:"区間準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
-{t:59040,type:"V",dest:"大阪難波",conf:"C",unc:60,basis:"鶴橋着基準補間"},
 {t:59433,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:59640,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
 {t:59673,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
@@ -422,7 +413,6 @@ const NORTH = [
 {t:72860,type:"ISL",dest:"大阪難波",conf:"C",unc:60,basis:"大和八木基準補間"},
 {t:73173,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:73233,type:"普通",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
-{t:73425,type:"ひのとり",dest:"大阪難波",conf:"B",unc:45,basis:"鶴橋着基準補間"},
 {t:73980,type:"UL",dest:"大阪難波",conf:"B",unc:45,basis:"大和八木基準補間"},
 {t:74313,type:"準急",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
 {t:74493,type:"急行",dest:"大阪上本町",conf:"A",unc:30,basis:"河内国分発基準"},
