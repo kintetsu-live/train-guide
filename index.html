@@ -646,7 +646,7 @@ function label(t){
 function count(delta){
  if(delta<=0)return"まもなく通過";
  const m=Math.floor(delta/60),s=Math.floor(delta%60);
- return m>99?"":`← ${m}:${pad(s)}`;
+ return m>99?"":`${m}:${pad(s)}`;
 }
 function upcoming(list,now,offset){return list.filter(x=>(x.t+offset)>=now-HOLD_AFTER_ESTIMATE).slice(0,2)}
 function render(id,r,i,now,offset){
