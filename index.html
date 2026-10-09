@@ -60,7 +60,7 @@ background:rgba(255,255,255,.15)}
   - 特急: 近鉄公式「特急時刻表」A/B。
   - 一般列車・快速急行の列車番号は近鉄一般向け公式時刻表で確認できないため非表示。
   - 通過予測時刻は指定撮影地点への数学的補正値であり、公式の秒単位通過時刻ではない。
-  - この版は「しまかぜ運転日」用。
+  - この版は「しまかぜ運転日」用。\n  - 現地実測に合わせ、全列車の通過予測を +60秒補正。\n  - 予測時刻到達後は「まもなく」を15秒保持。
 */
 const WEST=[
 {t:18695,type:"区間準急",dest:"大阪上本町",no:"",src:"河内国分発+位置補正"},
@@ -510,7 +510,8 @@ const EAST=[
 {t:87090,type:"区間準急",dest:"五位堂",no:"",src:"安堂発+位置補正"},
 {t:87165,type:"急行",dest:"大和八木",no:"",src:"河内国分発-位置補正"}
 ];
-const HOLD_AFTER_ESTIMATE=0;
+const PASSAGE_OFFSET_SEC=60;
+const HOLD_AFTER_ESTIMATE=15;
 
 function jpNow(){
  const p=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Tokyo",hour:"numeric",minute:"numeric",second:"numeric",hourCycle:"h23"})
@@ -537,17 +538,18 @@ function count(delta){
  const m=Math.floor(delta/60),s=Math.floor(delta%60);
  return m>99?"":`${m}:${pad(s)}`;
 }
-function upcoming(list,now){return list.filter(x=>x.t>=now-HOLD_AFTER_ESTIMATE).slice(0,2)}
+function upcoming(list,now){return list.filter(x=>(x.t+PASSAGE_OFFSET_SEC)>=now-HOLD_AFTER_ESTIMATE).slice(0,2)}
 function render(id,r,i,now){
  const el=document.getElementById(id);
  if(!r){el.innerHTML='<div class="empty">本日の案内終了</div>';return}
  const no=r.no?`<span class="no">${r.no}列車</span>`:"";
+ const pt=r.t+PASSAGE_OFFSET_SEC;
  el.innerHTML=`
  <div class="tag">${i===0?"NEXT":"NEXT2"}</div>
- <div class="time">${showTime(r.t)}</div>
+ <div class="time">${showTime(pt)}</div>
  <div class="type ${cls(r.type)}">${label(r.type)}</div>
  <div class="dest">${r.dest}${no}</div>
- <div class="cd">${count(r.t-now)}</div>`;
+ <div class="cd">${count(pt-now)}</div>`;
 }
 function update(){
  const now=jpNow(),w=upcoming(WEST,now),e=upcoming(EAST,now);
