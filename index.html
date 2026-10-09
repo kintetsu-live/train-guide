@@ -157,12 +157,12 @@ body{
 <body>
 <div class="board">
  <section class="panel osaka">
-  <div class="dir"><span class="dname">大阪方面</span></div>
+  <div class="dir"><span class="dname">大阪上本町方面</span></div>
   <div class="train" id="w1"></div>
   <div class="train" id="w2"></div>
  </section>
  <section class="panel ise">
-  <div class="dir"><span class="dname">伊勢方面</span></div>
+  <div class="dir"><span class="dname">近鉄名古屋/賢島方面</span></div>
   <div class="train" id="e1"></div>
   <div class="train" id="e2"></div>
  </section>
@@ -171,12 +171,12 @@ body{
 /*
   データ方針:
   - 2026年3月14日現在の近鉄公式時刻表のみ使用。
-  - 一般列車: 河内国分(大阪方面)、安堂(伊勢方面)、河内国分(安堂通過列車)。
+  - 一般列車: 河内国分(大阪方面)、安堂(近鉄名古屋/賢島方面)、河内国分(安堂通過列車)。
   - 快速急行: 近鉄公式 鶴橋・大和八木時刻表。
   - 特急: 近鉄公式「特急時刻表」A/B。
   - 一般列車・快速急行の列車番号は近鉄一般向け公式時刻表で確認できないため非表示。
   - 通過予測時刻は指定撮影地点への数学的補正値であり、公式の秒単位通過時刻ではない。
-  - この版は「特急 しまかぜ運転日」用。\n  - 現地実測に合わせ、大阪方面・伊勢方面を別々の秒数で補正可能。\n  - 予測時刻到達後は「まもなく」を20秒保持。
+  - この版は「特急 しまかぜ運転日」用。\n  - 現地実測に合わせ、大阪方面・近鉄名古屋/賢島方面を別々の秒数で補正可能。\n  - 予測時刻到達後は「まもなく」を20秒保持。
 */
 const WEST=[
 {t:18695,type:"区間準急",dest:"大阪上本町",no:"",src:"河内国分発+位置補正"},
@@ -628,7 +628,7 @@ const EAST=[
 ];
 // 方向別オフセット（秒）
 const WEST_OFFSET_SEC=-10;  // 大阪方面
-const EAST_OFFSET_SEC=-30;  // 伊勢方面
+const EAST_OFFSET_SEC=-30;  // 近鉄名古屋/賢島方面
 const HOLD_AFTER_ESTIMATE=20;
 
 function jpNow(){
