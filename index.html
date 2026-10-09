@@ -651,6 +651,29 @@ function cls(t){
 function label(t){
  return t==="特急 UL"?"特急 UL":t==="特急 V"?"特急 V":t==="特急 ISL"?"特急 ISL":t;
 }
+function destEn(dest){
+ const map={
+  "大阪上本町":"Osaka-Uehommachi",
+  "大阪難波":"Osaka-Namba",
+  "高安":"Takayasu",
+  "河内国分":"Kawachi-Kokubu",
+  "五位堂":"Goido",
+  "大和八木":"Yamato-Yagi",
+  "大和朝倉":"Yamato-Asakura",
+  "榛原":"Haibara",
+  "名張":"Nabari",
+  "青山町":"Aoyamacho",
+  "伊勢中川":"Ise-Nakagawa",
+  "松阪":"Matsusaka",
+  "宇治山田":"Ujiyamada",
+  "五十鈴川":"Isuzugawa",
+  "鳥羽":"Toba",
+  "賢島":"Kashikojima",
+  "近鉄名古屋":"Kintetsu-Nagoya"
+ };
+ const en=map[dest]||"";
+ return en?`<span style="font-size:8px;font-weight:700;color:rgba(255,255,255,.72);margin-left:5px;white-space:nowrap">${en}</span>`:"";
+}
 function count(delta){
  if(delta<=0)return"まもなく通過";
  const m=Math.floor(delta/60),s=Math.floor(delta%60);
@@ -666,7 +689,7 @@ function render(id,r,i,now,offset){
  <div class="tag" style="color:${i===0?'#ff3b30':'#34c759'}">${i===0?"先発":"次発"}</div>
  <div class="time">${showTime(pt)}</div>
  <div class="type ${cls(r.type)}">${label(r.type)}</div>
- <div class="dest">${r.dest}${no}</div>
+ <div class="dest">${r.dest}${destEn(r.dest)}${no}</div>
  <div class="cd">${count(pt-now)}</div>`;
 }
 function update(){
