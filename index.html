@@ -689,7 +689,7 @@ function render(id,r,i,now,offset){
  const no=r.no?`<span class="no">${String(r.no).padStart(4,"0")}列車</span>`:"";
  const pt=r.t+offset;
  el.innerHTML=`
- <div class="tag" style="color:${i===0?'#ff3b30':'#34c759'}">${["先発","次発","次々発"][i]}</div>
+ <div class="tag" style="color:${i===0?'#ff3b30':i===1?'#34c759':'#ffffff'}">${["先発","次発","次々発"][i]}</div>
  <div class="time">${showTime(pt)}</div>
  <div class="type ${cls(r.type)}">${label(r.type)}</div>
  <div class="dest">${r.dest}${destEn(r.dest)}${no}</div>
