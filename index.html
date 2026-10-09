@@ -63,7 +63,7 @@ body{
  font-weight:900;
  white-space:nowrap
 }
-.dname{font-size:9px;letter-spacing:.02em}
+.dname{font-size:10px;letter-spacing:.02em}
 .train{
  min-width:0;
  display:grid;
@@ -75,14 +75,14 @@ body{
  background:rgba(255,255,255,.07)
 }
 .tag{
- font-size:6px;
+ font-size:7px;
  font-weight:900;
  letter-spacing:.06em;
  color:rgba(255,255,255,.70);
  white-space:nowrap
 }
 .time{
- font-size:14px;
+ font-size:15px;
  font-weight:950;
  line-height:1;
  font-variant-numeric:tabular-nums;
@@ -96,7 +96,7 @@ body{
  width:48px;
  padding:1px 4px;
  border-radius:4px;
- font-size:7px;
+ font-size:8px;
  font-weight:950;
  white-space:nowrap;
  background:rgba(255,255,255,.15);
@@ -118,7 +118,7 @@ body{
 .type.local{background:rgba(44,100,163,.82)}
 .dest{
  min-width:0;
- font-size:9px;
+ font-size:10px;
  font-weight:900;
  white-space:nowrap;
  overflow:hidden;
@@ -128,14 +128,14 @@ body{
  left:4px;
 }
 .no{
- font-size:6px;
+ font-size:7px;
  font-weight:700;
  color:rgba(255,255,255,.66);
  margin-left:4px;
  white-space:nowrap
 }
 .cd{
- font-size:6px;
+ font-size:7px;
  font-weight:850;
  text-align:right;
  white-space:nowrap;
@@ -143,24 +143,24 @@ body{
 }
 .empty{
  grid-column:1/-1;
- font-size:8px;
+ font-size:9px;
  font-weight:800;
  color:rgba(255,255,255,.68)
 }
 @media(max-width:900px){
  .board{gap:2px;padding:1px}
  .panel{grid-template-rows:12px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)}
- .dname{font-size:8px}
+ .dname{font-size:9px}
  .train{
    grid-template-columns:19px 49px 50px minmax(63px,1fr) 34px;
    gap:2px;
    padding:1px 3px
  }
- .time{font-size:13px}
- .type{font-size:6px}
- .dest{font-size:8px}
- .no{font-size:6px}
- .cd{font-size:6px}
+ .time{font-size:14px}
+ .type{font-size:7px}
+ .dest{font-size:9px}
+ .no{font-size:7px}
+ .cd{font-size:7px}
 }
 </style>
 </head>
@@ -685,7 +685,7 @@ function destEn(dest){
   "近鉄名古屋":"Kintetsu-Nagoya"
  };
  const en=map[dest]||"";
- return en?`<span style="font-size:8px;font-weight:700;color:rgba(255,255,255,.72);margin-left:5px;white-space:nowrap">${en}</span>`:"";
+ return en?`<span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.72);margin-left:5px;white-space:nowrap">${en}</span>`:"";
 }
 function count(delta){
  if(delta<=0)return"まもなく通過";
