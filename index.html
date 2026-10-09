@@ -59,7 +59,7 @@ background:rgba(255,255,255,.15)}
   - 特急: 近鉄公式「特急時刻表」A/B。
   - 一般列車・快速急行の列車番号は近鉄一般向け公式時刻表で確認できないため非表示。
   - 通過予測時刻は指定撮影地点への数学的補正値であり、公式の秒単位通過時刻ではない。
-  - この版は「しまかぜ運転日」用。\n  - 現地実測に合わせ、全列車の通過予測を +60秒補正。\n  - 予測時刻到達後は「まもなく」を15秒保持。
+  - この版は「しまかぜ運転日」用。\n  - 現地実測に合わせ、全列車の通過予測を +30秒補正。\n  - 予測時刻到達後は「まもなく」を15秒保持。
 */
 const WEST=[
 {t:18695,type:"区間準急",dest:"大阪上本町",no:"",src:"河内国分発+位置補正"},
@@ -535,7 +535,7 @@ function label(t){
 function count(delta){
  if(delta<=0)return"まもなく";
  const m=Math.floor(delta/60),s=Math.floor(delta%60);
- return m>99?"":`通過まで残り ${m}:${pad(s)}`;
+ return m>99?"":`通過まで ${m}:${pad(s)}`;
 }
 function upcoming(list,now){return list.filter(x=>(x.t+PASSAGE_OFFSET_SEC)>=now-HOLD_AFTER_ESTIMATE).slice(0,2)}
 function render(id,r,i,now){
