@@ -106,6 +106,10 @@ body{
  background:rgba(230,30,30,.95);
  border:1px solid #fff;
 }
+.type.shimakaze{
+ background:rgba(80,190,255,.95);
+ border:1px solid #fff;
+}
 .type.rapid{background:rgba(205,117,30,.82)}
 .type.express{background:rgba(230,120,35,.90)}
 .type.semi{background:rgba(43,127,87,.82)}
@@ -646,7 +650,8 @@ function showTime(t){
  const r=Math.round(t/60)*60; return `${pad(Math.floor(r/3600)%24)}:${pad(Math.floor((r%3600)/60))}頃`;
 }
 function cls(t){
- if(["特急","特急 V","特急 ISL","特急 UL","特急 ひのとり","特急 しまかぜ"].includes(t))return"limited";
+ if(t==="特急 しまかぜ")return"shimakaze";
+ if(["特急","特急 V","特急 ISL","特急 UL","特急 ひのとり"].includes(t))return"limited";
  if(t==="快速急行")return"rapid";
  if(["急行","区間急行"].includes(t))return"express";
  if(["準急","区間準急"].includes(t))return"semi";
