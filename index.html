@@ -29,30 +29,28 @@ body{
 }
 
 .board{
- width:98vw;
- height:116px;
+ width:68.6vw;
+ height:81px;
  display:grid;
  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
- gap:4px;
- padding:3px;
+ gap:3px;
+ padding:2px;
  background:rgba(5,9,15,.90);
  border:1px solid rgba(255,255,255,.20);
- border-radius:9px;
+ border-radius:6px;
  overflow:hidden;
- backdrop-filter:blur(5px);
- -webkit-backdrop-filter:blur(5px);
+ backdrop-filter:blur(4px);
+ -webkit-backdrop-filter:blur(4px);
  opacity:0.90;
 
- transform:scale(0.7);
- transform-origin:top center;
 }
 .panel{
  min-width:0;
  display:grid;
- grid-template-rows:18px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);
- gap:2px;
- padding:2px;
- border-radius:7px;
+ grid-template-rows:13px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);
+ gap:1px;
+ padding:1px;
+ border-radius:5px;
  background:rgba(255,255,255,.035)
 }
 .panel.osaka{border-right:1px solid rgba(255,255,255,.12)}
@@ -60,43 +58,43 @@ body{
  display:flex;
  align-items:center;
  justify-content:center;
- border-radius:5px;
+ border-radius:4px;
  background:rgba(255,255,255,.08);
  font-weight:900;
  white-space:nowrap
 }
-.dname{font-size:13px;letter-spacing:.02em}
+.dname{font-size:9px;letter-spacing:.02em}
 .train{
  min-width:0;
  display:grid;
- grid-template-columns:32px 80px 72px minmax(120px,1fr) 64px;
- gap:4px;
+ grid-template-columns:22px 56px 50px minmax(84px,1fr) 45px;
+ gap:3px;
  align-items:center;
- padding:1px 6px;
- border-radius:5px;
+ padding:1px 4px;
+ border-radius:4px;
  background:rgba(255,255,255,.07)
 }
 .tag{
- font-size:8px;
+ font-size:6px;
  font-weight:900;
  letter-spacing:.06em;
  color:rgba(255,255,255,.70);
  white-space:nowrap
 }
 .time{
- font-size:20px;
+ font-size:14px;
  font-weight:950;
  line-height:1;
  font-variant-numeric:tab特急 ULar-nums;
  white-space:nowrap;
- padding-right:2px
+ padding-right:1px
 }
 .type{
  justify-self:start;
- width:72px;
- padding:2px 5px;
- border-radius:5px;
- font-size:10px;
+ width:50px;
+ padding:1px 4px;
+ border-radius:4px;
+ font-size:7px;
  font-weight:950;
  white-space:nowrap;
  background:rgba(255,255,255,.15);
@@ -114,22 +112,22 @@ body{
 .type.local{background:rgba(44,100,163,.82)}
 .dest{
  min-width:0;
- font-size:13px;
+ font-size:9px;
  font-weight:900;
  white-space:nowrap;
  overflow:hidden;
  text-overflow:ellipsis;
- padding-left:14px;
+ padding-left:10px;
 }
 .no{
- font-size:9px;
+ font-size:6px;
  font-weight:700;
  color:rgba(255,255,255,.66);
- margin-left:5px;
+ margin-left:4px;
  white-space:nowrap
 }
 .cd{
- font-size:9px;
+ font-size:6px;
  font-weight:850;
  text-align:right;
  white-space:nowrap;
@@ -137,24 +135,24 @@ body{
 }
 .empty{
  grid-column:1/-1;
- font-size:12px;
+ font-size:8px;
  font-weight:800;
  color:rgba(255,255,255,.68)
 }
 @media(max-width:900px){
- .board{gap:3px;padding:2px}
- .panel{grid-template-rows:17px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)}
- .dname{font-size:12px}
+ .board{gap:2px;padding:1px}
+ .panel{grid-template-rows:12px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)}
+ .dname{font-size:8px}
  .train{
-   grid-template-columns:27px 70px 72px minmax(90px,1fr) 48px;
-   gap:3px;
-   padding:1px 4px
+   grid-template-columns:19px 49px 50px minmax(63px,1fr) 34px;
+   gap:2px;
+   padding:1px 3px
  }
- .time{font-size:18px}
- .type{font-size:9px}
- .dest{font-size:11px}
- .no{font-size:8px}
- .cd{font-size:8px}
+ .time{font-size:13px}
+ .type{font-size:6px}
+ .dest{font-size:8px}
+ .no{font-size:6px}
+ .cd{font-size:6px}
 }
 </style>
 </head>
