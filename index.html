@@ -30,7 +30,7 @@ body{
 
 .board{
  width:98vw;
- height:88px;
+ height:116px;
  display:grid;
  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
  gap:4px;
@@ -45,7 +45,7 @@ body{
 .panel{
  min-width:0;
  display:grid;
- grid-template-rows:18px minmax(0,1fr) minmax(0,1fr);
+ grid-template-rows:18px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);
  gap:2px;
  padding:2px;
  border-radius:7px;
@@ -139,7 +139,7 @@ body{
 }
 @media(max-width:900px){
  .board{gap:3px;padding:2px}
- .panel{grid-template-rows:17px minmax(0,1fr) minmax(0,1fr)}
+ .panel{grid-template-rows:17px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)}
  .dname{font-size:12px}
  .train{
    grid-template-columns:27px 70px 72px minmax(90px,1fr) 48px;
@@ -160,11 +160,13 @@ body{
   <div class="dir"><span class="dname">大阪上本町方面</span></div>
   <div class="train" id="w1"></div>
   <div class="train" id="w2"></div>
+  <div class="train" id="w3"></div>
  </section>
  <section class="panel ise">
   <div class="dir"><span class="dname">近鉄名古屋/賢島方面</span></div>
   <div class="train" id="e1"></div>
   <div class="train" id="e2"></div>
+  <div class="train" id="e3"></div>
  </section>
 </div>
 <script>
@@ -679,14 +681,14 @@ function count(delta){
  const m=Math.floor(delta/60),s=Math.floor(delta%60);
  return m>99?"":`${m}:${pad(s)}`;
 }
-function upcoming(list,now,offset){return list.filter(x=>(x.t+offset)>=now-HOLD_AFTER_ESTIMATE).slice(0,2)}
+function upcoming(list,now,offset){return list.filter(x=>(x.t+offset)>=now-HOLD_AFTER_ESTIMATE).slice(0,3)}
 function render(id,r,i,now,offset){
  const el=document.getElementById(id);
  if(!r){el.innerHTML='<div class="empty">本日の案内終了</div>';return}
  const no=r.no?`<span class="no">${String(r.no).padStart(4,"0")}列車</span>`:"";
  const pt=r.t+offset;
  el.innerHTML=`
- <div class="tag" style="color:${i===0?'#ff3b30':'#34c759'}">${i===0?"先発":"次発"}</div>
+ <div class="tag" style="color:${i===0?'#ff3b30':'#34c759'}">${["先発","次発","次々発"][i]}</div>
  <div class="time">${showTime(pt)}</div>
  <div class="type ${cls(r.type)}">${label(r.type)}</div>
  <div class="dest">${r.dest}${destEn(r.dest)}${no}</div>
@@ -698,8 +700,10 @@ function update(){
  const e=upcoming(EAST,now,EAST_OFFSET_SEC);
  render("w1",w[0],0,now,WEST_OFFSET_SEC);
  render("w2",w[1],1,now,WEST_OFFSET_SEC);
+ render("w3",w[2],2,now,WEST_OFFSET_SEC);
  render("e1",e[0],0,now,EAST_OFFSET_SEC);
  render("e2",e[1],1,now,EAST_OFFSET_SEC);
+ render("e3",e[2],2,now,EAST_OFFSET_SEC);
 }
 update();setInterval(update,1000);
 </script>
