@@ -688,7 +688,7 @@ function destEn(dest){
  return en?`<span style="font-size:7px;font-weight:700;color:rgba(255,255,255,.72);margin-left:5px;white-space:nowrap">${en}</span>`:"";
 }
 function count(delta){
- if(delta<=0)return"まもなく通過";
+ if(delta<=0)return"接近中";
  const m=Math.floor(delta/60),s=Math.floor(delta%60);
  return m>99?"":`${m}:${pad(s)}`;
 }
