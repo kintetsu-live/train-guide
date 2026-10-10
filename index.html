@@ -90,6 +90,8 @@ body{
  padding-right:1px;
  width:100%;
  text-align:center;
+ position:relative;
+ left:4px;
 }
 .type{
  justify-self:start;
@@ -109,6 +111,10 @@ body{
 .type.limited{
  background:rgba(230,30,30,.95);
  border:1px solid #fff;
+}
+.type.shimakaze{
+ background:rgba(50,170,255,.95);
+ color:#ff0000;
 }
 
 .type.rapid{
@@ -139,7 +145,7 @@ body{
  font-weight:850;
  text-align:right;
  white-space:nowrap;
- font-variant-numeric:tab特急 ULar-nums
+ font-variant-numeric:tabular-nums;
 }
 .empty{
  grid-column:1/-1;
