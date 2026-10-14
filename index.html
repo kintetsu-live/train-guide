@@ -30,7 +30,7 @@ body{
 
 .board{
  width:99.9vw;
- height:101px;
+ height:81px;
  display:grid;
  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
  gap:3px;
@@ -47,7 +47,7 @@ body{
 .panel{
  min-width:0;
  display:grid;
- grid-template-rows:13px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);
+ grid-template-rows:13px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);
  gap:1px;
  padding:1px;
  border-radius:5px;
@@ -159,7 +159,7 @@ body{
 }
 @media(max-width:900px){
  .board{gap:2px;padding:1px}
- .panel{grid-template-rows:12px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)}
+ .panel{grid-template-rows:12px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)}
  .train{
    grid-template-columns:19px 49px 50px minmax(63px,1fr) 50px;
    gap:2px;
@@ -175,14 +175,12 @@ body{
   <div class="train" id="e1"></div>
   <div class="train" id="e2"></div>
   <div class="train" id="e3"></div>
-  <div class="train" id="e4"></div>
  </section>
  <section class="panel osaka">
   <div class="dir"><span class="dname">安堂　◁ ◁ ◁ ◁　大阪上本町 方面　◁ ◁ ◁ ◁　河内国分</span></div>
   <div class="train" id="w1"></div>
   <div class="train" id="w2"></div>
   <div class="train" id="w3"></div>
-  <div class="train" id="w4"></div>
  </section>
 </div>
 <script>
@@ -692,14 +690,14 @@ function count(delta){
  const m=Math.floor(delta/60),s=Math.floor(delta%60);
  return m>99?"":`${m}:${pad(s)}`;
 }
-function upcoming(list,now,offset){return list.filter(x=>(x.t+offset)>=now-HOLD_AFTER_ESTIMATE).slice(0,4)}
+function upcoming(list,now,offset){return list.filter(x=>(x.t+offset)>=now-HOLD_AFTER_ESTIMATE).slice(0,3)}
 function render(id,r,i,now,offset){
  const el=document.getElementById(id);
  if(!r){el.innerHTML='<div class="empty">本日の運転は、終了しました。</div>';return}
  const no=r.no?`<span class="no">${String(r.no).padStart(4,"0")}列車</span>`:"";
  const pt=r.t+offset;
  el.innerHTML=`
- <div class="tag" style="color:${i===0?'#ff3b30':i===1?'#34c759':'#ffffff'}">${["先発","次発","次々発","その後"][i]}</div>
+ <div class="tag" style="color:${i===0?'#ff3b30':i===1?'#34c759':'#ffffff'}">${["先発","次発","次々発"][i]}</div>
  <div class="time">${showTime(pt)}</div>
  <div class="type ${cls(r.type)}">${label(r.type)}</div>
  <div class="dest">${r.dest}${destEn(r.dest)}${no}</div>
@@ -712,11 +710,9 @@ function update(){
  render("w1",w[0],0,now,WEST_OFFSET_SEC);
  render("w2",w[1],1,now,WEST_OFFSET_SEC);
  render("w3",w[2],2,now,WEST_OFFSET_SEC);
- render("w4",w[3],3,now,WEST_OFFSET_SEC);
  render("e1",e[0],0,now,EAST_OFFSET_SEC);
  render("e2",e[1],1,now,EAST_OFFSET_SEC);
  render("e3",e[2],2,now,EAST_OFFSET_SEC);
- render("e4",e[3],3,now,EAST_OFFSET_SEC);
 }
 update();setInterval(update,1000);
 </script>
