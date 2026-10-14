@@ -693,7 +693,7 @@ function count(delta){
 function upcoming(list,now,offset){return list.filter(x=>(x.t+offset)>=now-HOLD_AFTER_ESTIMATE).slice(0,3)}
 function render(id,r,i,now,offset){
  const el=document.getElementById(id);
- if(!r){el.innerHTML='<div class="empty">本日の案内終了</div>';return}
+ if(!r){el.innerHTML='<div class="empty">本日の運転は、終了しました。</div>';return}
  const no=r.no?`<span class="no">${String(r.no).padStart(4,"0")}列車</span>`:"";
  const pt=r.t+offset;
  el.innerHTML=`
