@@ -634,7 +634,7 @@ const EAST=[
 ];
 // 方向別オフセット（秒）
 const WEST_OFFSET_SEC=17;  // 大阪方面
-const EAST_OFFSET_SEC=56;  // 近鉄名古屋/賢島方面
+const EAST_OFFSET_SEC=39;  // 近鉄名古屋/賢島方面
 const HOLD_AFTER_ESTIMATE=60;  // 通過表示遅延時間
 
 function jpNow(){
@@ -682,7 +682,7 @@ function destEn(dest){
  return en?`<span style="font-size:6px;font-weight:700;color:rgba(255,255,255,.72);margin-left:5px;white-space:nowrap">${en}</span>`:"";
 }
 function count(delta){
- if(delta<=0)return"通過";
+ if(delta<=15)return"通過";
  const m=Math.floor(delta/60),s=Math.floor(delta%60);
  return m>99?"":`${m}:${pad(s)}`;
 }
