@@ -122,6 +122,7 @@ body{
 .type.express{background:rgba(230,120,35,.90)}
 .type.semi{background:rgba(43,127,87,.82)}
 .type.local{background:rgba(44,100,163,.82)}
+.type.deadhead{background:#fff;color:#000}
 .dest{
  min-width:0;
  font-size:10px; /* 行先表示 */
@@ -382,6 +383,7 @@ const WEST=[
 {t:75453,type:"急行",dest:"大阪上本町",no:"1924",src:"河内国分発+位置補正"},
 {t:75513,type:"区間準急",dest:"大阪上本町",no:"8040",src:"河内国分発+位置補正"},
 {t:75934,type:"特急 V",dest:"大阪難波",no:"1902",src:"公式特急B 大和八木20:51/鶴橋21:20"},
+{t:75975,type:"回送",dest:"高安",no:"",src:"2026/10/13実測 21:06:40 名張→高安 V03"},
 {t:76053,type:"普通",dest:"大阪上本町",no:"2160",src:"河内国分発+位置補正"},
 {t:76773,type:"急行",dest:"大阪上本町",no:"",src:"河内国分発+位置補正"},
 {t:76893,type:"区間準急",dest:"大阪上本町",no:"",src:"河内国分発+位置補正"},
@@ -653,6 +655,7 @@ function cls(t){
  if(t==="快速急行")return"rapid";
  if(["急行","区間急行"].includes(t))return"express";
  if(["準急","区間準急"].includes(t))return"semi";
+ if(t==="回送")return"deadhead";
  return"local";
 }
 function label(t){
