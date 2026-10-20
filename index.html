@@ -114,7 +114,7 @@ body{
 }
 .type.shimakaze{
  background:rgba(50,170,255,.95);
- color:#ff0000;
+ color:#fff;
 }
 
 .type.rapid{
@@ -340,7 +340,7 @@ const WEST=[
 {t:64233,type:"急行",dest:"大阪上本町",no:"",src:"河内国分発+位置補正"},
 {t:64293,type:"区間準急",dest:"大阪上本町",no:"",src:"河内国分発+位置補正"},
 {t:64719,type:"特急",dest:"大阪上本町",no:"1602",src:"公式特急B 大和八木17:47/鶴橋18:13"},
-{t:64959,type:"特急 しまかぜ",dest:"大阪難波",no:"7600",src:"公式特急B 大和八木17:50/鶴橋18:15"},
+{t:64959,type:"しまかぜ",dest:"大阪難波",no:"7600",src:"公式特急B 大和八木17:50/鶴橋18:15"},
 {t:65313,type:"準急",dest:"大阪上本町",no:"",src:"河内国分発+位置補正"},
 {t:65493,type:"急行",dest:"大阪上本町",no:"1722",src:"河内国分発+位置補正"},
 {t:65553,type:"普通",dest:"大阪上本町",no:"1860",src:"河内国分発+位置補正"},
@@ -475,7 +475,7 @@ const EAST=[
 {t:38694,type:"普通",dest:"大和朝倉",no:"4043",src:"安堂発+位置補正"},
 {t:38868,type:"特急 UL",dest:"近鉄名古屋",no:"0110",src:"公式特急A 鶴橋10:36/大和八木11:02"},
 {t:38906,type:"区間急行",dest:"名張",no:"7023",src:"河内国分発-位置補正"},
-{t:39497,type:"特急 しまかぜ",dest:"賢島",no:"7001",src:"公式特急B 鶴橋10:46/大和八木11:11"},
+{t:39497,type:"しまかぜ",dest:"賢島",no:"7001",src:"公式特急B 鶴橋10:46/大和八木11:11"},
 {t:39834,type:"普通",dest:"大和朝倉",no:"4045",src:"安堂発+位置補正"},
 {t:39986,type:"区間急行",dest:"榛原",no:"7025",src:"河内国分発-位置補正"},
 {t:40494,type:"普通",dest:"大和朝倉",no:"4047",src:"安堂発+位置補正"},
@@ -651,7 +651,7 @@ function showTime(t){
  const r=Math.round(t/60)*60; return `${pad(Math.floor(r/3600)%24)}:${pad(Math.floor((r%3600)/60))}頃`;
 }
 function cls(t){
- if(t==="特急 しまかぜ")return"shimakaze";
+ if(t==="しまかぜ")return"shimakaze";
  if(["特急","特急 V","特急 ISL","特急 UL","ひのとり"].includes(t))return"limited";
  if(t==="快速急行")return"rapid";
  if(["急行","区間急行"].includes(t))return"express";
